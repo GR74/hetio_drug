@@ -1,0 +1,20 @@
+# Raw Hetionet downloads (regenerate via build scripts)
+hetionet-v1.0-edges.sif.gz
+hetionet-v1.0-nodes.tsv
+
+# Cached features and derived data (large; regenerate via features scripts)
+cache/
+*.npz
+subgraph.json
+full_subgraph.json
+pheno_subgraph.json
+
+# Run logs
+*.log
+run.err
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/

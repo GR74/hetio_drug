@@ -1,0 +1,37 @@
+{
+  "graph": {
+    "compounds": 1428,
+    "genes": 3000,
+    "diseases": 136,
+    "edges": 75984
+  },
+  "transductive": {
+    "indication_auroc": 0.727,
+    "contraindication_auroc": 0.952
+  },
+  "inductive_drugs": {
+    "id_auroc": 0.64,
+    "fp_auroc": 0.617,
+    "id_hits10": 0.2,
+    "fp_hits10": 0.215,
+    "fp_mrr": 0.099,
+    "feature_only_id": 0.547,
+    "feature_only_fp": 0.615
+  },
+  "inductive_diseases": {
+    "id_auroc": 0.429,
+    "phenotype_auroc": 0.442
+  },
+  "explainer_example": {
+    "drug": "Triamcinolone",
+    "disease": "osteoarthritis",
+    "score": 1.0,
+    "top_proteins": [
+      "CBR3",
+      "SERPINA6",
+      "PTGS2",
+      "NFIL3",
+      "CYP3A4"
+    ]
+  }
+}

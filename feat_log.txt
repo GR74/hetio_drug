@@ -1,0 +1,21 @@
+C:\Users\gowri\AppData\Local\Programs\Python\Python312\Lib\site-packages\huggingface_hub\file_download.py:143: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\gowri\.cache\huggingface\hub\models--facebook--esm2_t6_8M_UR50D. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+Some weights of EsmModel were not initialized from the model checkpoint at facebook/esm2_t6_8M_UR50D and are newly initialized: ['pooler.dense.bias', 'pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Featurizing REAL Hetionet nodes (cached after first run):
+  compounds: real fingerprint for 150/150 (100% real chemistry)
+  genes: loading ESM2 (facebook/esm2_t6_8M_UR50D) ...
+    embedded 50/500 proteins
+    embedded 100/500 proteins
+    embedded 150/500 proteins
+    embedded 200/500 proteins
+    embedded 250/500 proteins
+    embedded 300/500 proteins
+    embedded 350/500 proteins
+    embedded 400/500 proteins
+    embedded 450/500 proteins
+    embedded 500/500 proteins
+  genes: real ESM2 embedding for 500/500 (100% real proteins), dim=320
+  saved -> node_features.npz  (compounds (150, 1024), genes (500, 320))

@@ -1,0 +1,7 @@
+{
+  "ceiling_d1": 0.5,
+  "d2_no_bridge": 0.469,
+  "d3_bridge_id": 0.499,
+  "d3_bridge_content": 0.497,
+  "verdict": "bridge helps"
+}

@@ -1,0 +1,35 @@
+{
+  "graph": {
+    "compounds": 1428,
+    "genes": 3000,
+    "diseases": 136,
+    "edges": 75984
+  },
+  "transductive": {
+    "indication_auroc": 0.679,
+    "contraindication_auroc": 0.931
+  },
+  "inductive_drugs": {
+    "id_auroc": 0.613,
+    "fp_auroc": 0.6,
+    "id_hits10": 0.318,
+    "fp_hits10": 0.373,
+    "fp_mrr": 0.157
+  },
+  "inductive_diseases": {
+    "id_auroc": 0.575,
+    "text_auroc": 0.541
+  },
+  "explainer_example": {
+    "drug": "Losartan",
+    "disease": "type 2 diabetes mellitus",
+    "score": 0.848,
+    "top_proteins": [
+      "ADRB2",
+      "GNAS",
+      "RRS1",
+      "SLCO1B3",
+      "SLCO1B1"
+    ]
+  }
+}
