@@ -258,8 +258,11 @@ Three probes:
 | Probe | v3 (3 layers) | v3b (2 layers) |
 |-------|:---:|:---:|
 | D1 transductive ceiling | 0.500 | 0.499 |
-| D2 no bridge | 0.469 | (same near-chance pattern) |
-| D3 with bridge | 0.499 | (same near-chance pattern) |
+| D2 no bridge | 0.469 | 0.400 |
+| D3 with bridge | 0.499 | 0.439 (id), 0.494 (content) |
+
+Every cell is at or below chance. Depth, bridge, and features all leave the disease side
+unlearnable once popularity is controlled for.
 
 ### 10.1 What we ruled out
 - **Not over-smoothing.** Cutting from 3 layers to 2 did not move the transductive ceiling
