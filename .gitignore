@@ -18,3 +18,9 @@ __pycache__/
 *.pyc
 .venv/
 .ipynb_checkpoints/
+
+# stray artifacts
+hetionet-v1.0-edges.sextuple.tsv.gz
+*.err
+feat_log.txt
+feat_full.log
