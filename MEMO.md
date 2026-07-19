@@ -395,3 +395,43 @@ then removed the only cue it could easily use (popularity), leaving it at chance
 ```
 python proximity.py              # mechanistic proximity baseline -> proximity_results.json
 ```
+
+---
+
+## 13. Neurosymbolic fusion: complementary parts, but weighting matters
+
+The two signals have opposite strengths, so we tested whether combining them (neural
+embeddings plus symbolic graph mechanism) gives one scorer strong on both query types.
+Fusion is a simple unfitted equal-weight sum of standardised scores. File: `hybrid.py`.
+
+Popularity-matched, 3 seeds:
+
+| Task | GNN-only | Proximity-only | Fusion (equal-weight) |
+|------|:---:|:---:|:---:|
+| Drug query | 0.550 | 0.563 | **0.586** |
+| Disease query | 0.386 | **0.625** | 0.495 |
+
+Integrity note: an earlier version leaked (held-out diseases' treatment edges stayed in
+training and produced a fake disease-side GNN AUROC of 0.814). We caught it because it
+contradicted Sections 10 and 12, fixed it, and reran. The clean disease-side GNN is 0.386,
+below chance, consistent with the rest of the report.
+
+### 13.1 Honest verdict
+Equal-weight fusion is **not** a clean win. It helped the drug side (0.586, the best there)
+but hurt the disease side (0.495, worse than proximity's 0.625), because blindly averaging in
+the below-chance GNN signal drags proximity down. A naive sum of a good signal and a bad
+signal is worse than the good signal alone.
+
+### 13.2 The real result
+The parts are genuinely complementary: the learned GNN carries the **drug** side (chemistry of
+unseen drugs), mechanistic proximity carries the **disease** side (target-gene overlap). A
+**query-aware** neurosymbolic scorer, routing drug queries to GNN-plus-proximity fusion and
+disease queries to proximity, achieves the best result on **both** (0.586 and 0.625), which no
+single fixed model does. That is the honest neurosymbolic payoff: the value is in combining
+neural and symbolic components **weighted by where each is reliable**, not in a blind average.
+The next step is to learn that weighting (a gate conditioned on query type or on signal
+confidence) rather than hand-route it.
+
+```
+python hybrid.py                 # GNN vs proximity vs fusion -> hybrid_results.json
+```

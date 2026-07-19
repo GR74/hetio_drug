@@ -1,0 +1,13 @@
+{
+  "drug": {
+    "gnn": 0.55,
+    "prox": 0.563,
+    "fus": 0.586
+  },
+  "disease": {
+    "gnn": 0.386,
+    "prox": 0.625,
+    "fus": 0.495
+  },
+  "verdict": "mixed: fusion helps on at least one task"
+}
