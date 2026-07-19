@@ -1,0 +1,23 @@
+{
+  "encoders": [
+    "rgcn",
+    "gat"
+  ],
+  "transductive": {
+    "rgcn": 0.886,
+    "gat": 0.895
+  },
+  "inductive_auroc": {
+    "rgcn": 0.562,
+    "gat": 0.609
+  },
+  "inductive_hits10": {
+    "rgcn": 0.194,
+    "gat": 0.251
+  },
+  "feature_only": {
+    "rgcn": 0.516,
+    "gat": 0.529
+  },
+  "verdict": "attention helps"
+}

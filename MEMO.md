@@ -299,3 +299,43 @@ python build_pheno_graph.py      # add Symptom + Anatomy nodes -> pheno_subgraph
 python full_model_v3.py          # 3-layer diagnostic  -> v3_results.json
 python full_model_v3b.py         # 2-layer control     -> v3b_results.json
 ```
+
+---
+
+## 11. Architecture extension: relation-aware attention encoder
+
+Every model above used a mean-aggregation R-GCN encoder, which weights all neighbours
+equally and lets high-degree hubs dominate. We added a new encoder capability: a
+relation-aware multi-head attention layer (GAT and HGT style, 4 heads) that learns a
+dot-product attention weight per neighbour, so the model can down-weight uninformative
+hubs and focus on the neighbours that carry signal. It is a drop-in replacement for the
+R-GCN layer. File: `attn_model.py`, results in `attn_results.json`.
+
+Head to head on the full graph, cached features, popularity-matched evaluation:
+
+| Metric | R-GCN (mean-agg) | Attention (new) |
+|--------|:---:|:---:|
+| Transductive ceiling | 0.886 | **0.895** |
+| Inductive AUROC (unseen drugs) | 0.562 | **0.609** |
+| Inductive Hits@10 | 0.194 | **0.251** |
+| Feature-only AUROC | 0.516 | **0.529** |
+
+### 11.1 Verdict
+Attention helps, and it helps most where it counts: the **inductive** drug task gains
++0.047 AUROC and +0.057 Hits@10, a real improvement to the capability we actually care
+about (ranking repurposing candidates for unseen drugs). The transductive ceiling and
+feature-only numbers also nudge up. This is the first change that improved the core result
+without any new data, which fits the hypothesis that mean-aggregation was leaving signal on
+the table by treating every hub neighbour as equally important.
+
+### 11.2 Honest scope
+The gain is solid but moderate, from one comparison at 3 seeds. Attention costs noticeably
+more compute per epoch. It did not rescue the disease side (that remains a data problem per
+Section 10), which is expected: attention reweights existing signal, it cannot create
+disease-specific signal that is not in the graph. Attention is now the recommended default
+encoder for the module going forward, and the natural base for further work (edge-type
+attention, HGT-style typed projections).
+
+```
+python attn_model.py             # attention vs R-GCN comparison -> attn_results.json
+```
