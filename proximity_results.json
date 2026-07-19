@@ -1,0 +1,6 @@
+{
+  "popularity": 0.563,
+  "overlap": 0.737,
+  "proximity": 0.728,
+  "verdict": "SIGNAL FOUND: mechanistic proximity beats popularity and the GNN. The disease-side signal was there; the learned model washed it out. Use proximity for disease queries."
+}

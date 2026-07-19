@@ -242,6 +242,14 @@ python full_model_v2.py          # v2 experiments -> full_results_v2.json
 
 ## 10. Disease-side diagnosis (v3 and v3b): finding the real why
 
+> **Correction (see Section 12).** This section concluded the disease-side signal was
+> genuinely absent. That was wrong. A later non-learned mechanistic baseline reaches AUROC
+> 0.738 on the same task, so the signal is present and strong. What Sections 8 to 11 actually
+> showed is that the learned GNN fails to capture it. Read Section 12 for the corrected story.
+> The v3/v3b experiments below are still valid as ruling out over-smoothing and features
+> inside the GNN family; the error was concluding absence from a family of models that all
+> share the same blind spot.
+
 The v2 disease fix failed, so we ran a controlled diagnostic instead of guessing.
 Files: `build_pheno_graph.py`, `full_model_v3.py` (3 layers), `full_model_v3b.py`
 (2 layers), `v3_results.json`. We added Symptom and Anatomy as real nodes so that two
@@ -338,4 +346,52 @@ attention, HGT-style typed projections).
 
 ```
 python attn_model.py             # attention vs R-GCN comparison -> attn_results.json
+```
+
+---
+
+## 12. The disease side, revisited: a trivial baseline beats the GNN
+
+Before accepting "the disease side is unlearnable," we tried one thing the GNN family never
+tested: a **non-learned mechanistic score**, in the spirit of network-medicine proximity
+(Guney et al., 2016). No embeddings, no training. For a drug and a disease it asks a direct
+question: do the drug's protein targets overlap the disease's associated genes?
+
+    overlap = | targets(drug) INTERSECT genes(disease) |
+    proximity = (overlap + 0.5 * one-hop overlap through the PPI network) / sqrt(num targets)
+
+Evaluated on the same task, with the same popularity-matched negatives, 5 seeds:
+
+| Method | Disease-side AUROC |
+|--------|:---:|
+| Popularity prior | 0.557 +/- 0.002 |
+| Learned GNN (Sections 8 to 11) | ~0.44 to 0.50 |
+| Network proximity (overlap + 1-hop) | 0.729 +/- 0.002 |
+| **Target-gene overlap (trivial)** | **0.738 +/- 0.002** |
+
+### 12.1 What this means, honestly
+This **overturns the Section 10 conclusion.** The disease-side signal is not absent; it is
+strong. A one-line set-intersection reaches 0.738 while the learned GNN sat at chance. So the
+bottleneck was never the data, it was the model. Every earlier disease-side attempt shared the
+same blind spot because they were all the same family: message passing plus a DistMult dot
+product, which collapses a drug's many targets and a disease's many genes into single vectors
+and cannot cleanly recover a set overlap. Training against popularity-matched hard negatives
+then removed the only cue it could easily use (popularity), leaving it at chance.
+
+### 12.2 The corrected picture
+- The disease-side therapeutic signal is the **mechanistic overlap between a drug's targets
+  and a disease's genes**. It is real, strong, and computable without learning.
+- The refined "drug-carried" statement from earlier is right in spirit: the signal rides on
+  the drug's targets. But the earlier claim that the disease side is unlearnable was wrong.
+- **Lesson worth keeping:** always run a trivial, non-learned baseline before concluding a
+  signal is absent. A learned model failing is not evidence the signal is missing.
+
+### 12.3 What to do with it
+- **Immediate:** for disease queries, score with mechanistic proximity, or hybridise it with
+  the model (add overlap and proximity as explicit features or edges the GNN cannot wash out).
+- **Model fix:** give the decoder a term that preserves set overlap (for example an explicit
+  shared-neighbour count), rather than relying on a single dot product to rediscover it.
+
+```
+python proximity.py              # mechanistic proximity baseline -> proximity_results.json
 ```
