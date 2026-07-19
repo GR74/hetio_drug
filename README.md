@@ -1,4 +1,4 @@
-# helio_drug
+# hetio_drug
 
 Inductive zero-shot drug repurposing on Hetionet, built for the IAIRO GNN module.
 
